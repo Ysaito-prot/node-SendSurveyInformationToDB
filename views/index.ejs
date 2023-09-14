@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>アンケートフォーム</title>
+        <link type="text/css" rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <h1>アンケートフォーム</h1>
+        <form action="/" method="POST" name="questionnaire">
+            <div class="item"><label for="name">名前<span> ※</span></label> </div>
+            <input id="name" type="text" name="name" placeholder="お名前を入力してください" pattern="^[ぁ-ん一-龥々a-zA-Z\-]+$" required>
+            <div class="error-name"></div>
+            <div class="item"><label for="kana_name">かな<span> ※</span></label> </div>
+            <input id="kana_name" type="text" name="kana_name" placeholder="ふりがなを入力してください" pattern="^[ぁ-ん\-]+$" required>
+            <div class="error-kana_name"></div>
+            <div class="item"><label for="gender">性別<span> ※</span></label> </div>
+            <input id="gender" type="radio" name="gender" value="男" required>男 <input type="radio" name="gender" value="女">女 
+            <div class="error-gender"></div>
+            <div class="item"><label for="email">email<span> ※</span></label> </div>
+            <input id="email" type="text" name="email" placeholder="メールアドレスを入力してください" required>
+            <div class="error-email"></div>
+            <div class="item"><label for="address">お住いの住所<span> ※</span></label> </div>
+            <input id="address" type="text" name="address" pattern="^[ぁ-ん一-龥々0-9]+$" required>
+            <div class="error-address"></div>
+            <div class="item"><label for="tell">電話番号<span> ※</span></label> </div>
+            <input id="tell" type="text" name="tell" pattern="^[0-9\-]+$" required>
+            <div class="error-tell"></div>
+            <div class="item"><label for="know1">当サイトを知った内容</label> </div>
+            <label><input type="checkbox" name="know1" value="広告で知った">広告で知った</label><br>
+            <label><input type="checkbox" name="know2" value="サイトを見た">サイトを見た</label><br>
+            <label><input type="checkbox" name="know3" value="知人から教えてもらった">知人から教えてもらった</label><br>
+            <label><input type="checkbox" name="know4" value="youtubeの広告を見た">youtubeの広告を見た</label>
+            <div class="item"><label for="inquiry">問い合わせ内容</label> </div>
+            <textarea name="inquiry" cols="36" rows="6"></textarea>
+            <div class="button"><button type="submit" onclick="genderCheck();">送信</button></div>
+        </form>
+        <script>
+            let name = document.querySelector('#name');
+            let kana_name = document.querySelector('#kana_name');
+            let gender = document.querySelector('#gender');
+            let email = document.querySelector('#email');
+            let address = document.querySelector('#address');
+            let tell = document.querySelector('#tell');
+            let errorName = document.querySelector('.error-name');
+            let errorKana_name = document.querySelector('.error-kana_name');
+            let errorGender = document.querySelector('.error-gender');
+            let errorEmail = document.querySelector('.error-email');
+            let errorAddress = document.querySelector('.error-address');
+            let errorTell = document.querySelector('.error-tell');
+            // バリデーションチェック
+            name.addEventListener(`change`, () => {
+                if (name.value.match(/[ !?_+*'"`#$%&\-^\\@;:,./=~|[\](){}<>ァ-ヶ0-9]/)) {
+                    errorName.innerHTML = "漢字、ひらがな、英字で入力してください";
+                    errorName.style.color = "red";
+                } else {
+                    errorName.innerHTML = "";
+                }
+            });
+            kana_name.addEventListener(`change`, () => {
+                if (kana_name.value.match(/[ !?_+*'"`#$%&\-^\\@;:,./=~|[\](){}<>ァ-ヶ一-龥々a-zA-Z0-9]/)) {
+                    errorKana_name.innerHTML = "ひらがなで入力してください";
+                    errorKana_name.style.color = "red";
+                } else {
+                    errorKana_name.innerHTML = "";
+                }
+            });
+            email.addEventListener(`change`, () => {
+                if (!email.value.match(/.+@.+\..+/)) {
+                    errorEmail.innerHTML = "メールアドレス形式で入力してください";
+                    errorEmail.style.color = "red";
+                } else {
+                    errorEmail.innerHTML = "";
+                }
+            });
+            address.addEventListener(`change`, () => {
+                if (address.value.match(/[ !?_+*'"`#$%&\-^\\@;:,./=~|[\](){}<>ァ-ヶ一a-zA-Z]/)) {
+                    errorAddress.innerHTML = "漢字、ひらがな、数字で入力してください";
+                    errorAddress.style.color = "red";
+                } else {
+                    errorAddress.innerHTML = "";
+                }
+            });
+            tell.addEventListener(`change`, () => {
+                if (tell.value.match(/[ !?_+*'"`#$%&\^\\@;:,./=~|[\](){}<>ぁ-んァ-ヶ一龥々a-zA-Z]/)) {
+                    errorTell.innerHTML = "ハイフン、数字で入力してください";
+                    errorTell.style.color = "red";
+                } else {
+                    errorTell.innerHTML = "";
+                }
+            });
+            function genderCheck() {
+                let flag = false; // 選択されているか否かを判定するフラグ
+                // ラジオボタンの数だけ判定を繰り返す
+                for (let i = 0; i < document.questionnaire.gender.length; i++) {
+                    // i番目のラジオボタンがチェックされているかを判定
+                    if (document.questionnaire.gender[i].checked) {
+                        flag = true;
+                    }
+                }
+                // 何も選択されていない場合の処理
+                if (!flag) {
+                    errorGender.innerHTML = "どちらか選択してください";
+                    errorGender.style.color = "red";
+                } else {
+                    errorGender.innerHTML = "";
+                }
+            }
+
+        </script>
+    </body>
+</html>
